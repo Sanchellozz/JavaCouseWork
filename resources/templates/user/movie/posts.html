@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring Boot Thymeleaf Application - Bootstrap Rich Text Editor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+<nav th:replace="layouts :: main_navbar"></nav>
+
+<section class="my-4 mx-auto p-2 bg-dark rounded-lg container text-dark-50">
+    <div class="album py-5 bg-dark">
+        <div class="container" th:each="post : ${posts}">
+            <section class="my-4 mx-auto p-2 bg-light rounded-lg container text-dark-50">
+                <div class="row row-cols-1">
+                    <div class="col">
+                        <h2 th:text="${post.title}"></h2>
+                        <div class="card-body">
+                            <p class="card-text" th:utext="${post.content}"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div  class="btn-group">
+                                    <form th:action="@{/movies/posts/{id}/financing/{idpost} (id=${movie_id},idpost=${post.getPostId()})}" method="post" style="margin-top: 2rem;">
+                                        <input  type="text" th:name="finance" class="form-control" id="finance" required>
+                                    </form>
+                                    <div class="alert alert-warning" th:if="${error} == true">
+                                        <p>Пополните счет</p>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 3.5rem; margin-left: 5rem;">
+                                    <small class="text-muted"
+                                           style="margin-top: 3rem; margin-left: 43rem;">Собрано:</small>
+                                    <small class="text-muted" style="margin-top: 3rem;" th:text="${post.moneyTotal}">123</small>
+                                    <small class="text-muted"
+                                           style="margin-top: 3rem; margin-left: 43rem;">Требуется:</small>
+                                    <small class="text-muted" style="margin-top: 3rem;" th:text="${post.moneyRequired}">123</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div>
+        <a th:if="${movieUser.getUser().getId() == currentUser.getId()}" th:href="@{'/movies/posts/add/'+${movie_id}}"
+           class="btn btn-primary">Добавить</a>
+        <a th:href="@{'/movies/postsfalse/'+${movie_id}}" class="btn btn-primary">Завершенные</a>
+        <a th:href="@{'/movies/'+${movie_id}}" class="btn btn-primary">Вернуться</a>
+    </div>
+</section>
+</body>
+</html>
